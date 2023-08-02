@@ -70,7 +70,7 @@ const resultGpa = (data) =>{
 
 // Image preview functionality here...
 const imageView = (value) =>{
-    if (value == "student-avatar.jpg") {
+    if (value == "https://i.ibb.co/Bt34sh7/student-avatar.jpg") {
         return `https://i.ibb.co/Bt34sh7/student-avatar.jpg`;
     } else {
         return value

@@ -109,7 +109,7 @@ if (addNewForm) {
                 email,
                 roll,
                 reg, 
-                photo : photo ? photo : "student-avatar.jpg", 
+                photo : photo ? photo : "https://i.ibb.co/Bt34sh7/student-avatar.jpg", 
                 timeStamps : Date.now(),
                 result : null
             })
@@ -232,7 +232,7 @@ if (edit_student_form) {
                 
                 // Now replace data here...
                 allStudents[singleStudent] = {
-                    id,name,email,roll,reg,photo : photo ? singleStudent.photo : "student-avatar.jpg"
+                    id,name,email,roll,reg,photo : photo ? photo : "https://i.ibb.co/Bt34sh7/student-avatar.jpg"
                 }
 
                 // Now set data in localStorage here...
