@@ -71,7 +71,7 @@ const resultGpa = (data) =>{
 // Image preview functionality here...
 const imageView = (value) =>{
     if (value == "student-avatar.jpg") {
-        return `/assets/image/default-image/student-avatar.jpg`;
+        return `../../assets/image/default-image/student-avatar.jpg`;
     } else {
         return value
     }
