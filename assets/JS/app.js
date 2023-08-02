@@ -44,7 +44,7 @@ const showAllStudents = (key) =>{
             <tr>
                 <td>${index + 1}</td>
                 <td>
-                    <img dataId="${id}" data-bs-target="#single_student_view" data-bs-toggle="modal" class="shadow" src="${photo}" alt="${name}">
+                    <img dataId="${id}" data-bs-target="#single_student_view" data-bs-toggle="modal" class="shadow" src="${imageView(photo)}" alt="${name}">
                 </td>
                 <td>${name}</td>
                 <td>${roll}</td>
@@ -232,7 +232,7 @@ if (edit_student_form) {
                 
                 // Now replace data here...
                 allStudents[singleStudent] = {
-                    id,name,email,roll,reg,photo
+                    id,name,email,roll,reg,photo : photo ? singleStudent.photo : "student-avatar.jpg"
                 }
 
                 // Now set data in localStorage here...
@@ -270,7 +270,7 @@ if (students_content_list) {
             // Get single student here...
             const singleStudent = allStudents.find(data => data.id == id);
             singleStudentViewInfo.innerHTML = `<div class="student_image text-center mb-3 mt-2">
-            <img class="shadow-lg rounded-circle w-50 h-50" src="${singleStudent.photo}" alt="">
+            <img class="shadow-lg rounded-circle w-50 h-50" src="${imageView(singleStudent.photo)}" alt="">
             </div>
             <div class="student_info">
                 <table class="table table-hover table-responsive table-striped">
@@ -452,7 +452,7 @@ if (students_content_list) {
             </div>
             <div class="my-3 text-center">
                 <lable class="d-block text-left">Old Photo</lable>
-                <img src="${photo}" alt="${name}" class="w-50 h-50 rounded-circle my-2 shadow-lg">
+                <img src="${imageView(photo)}" alt="${name}" class="w-50 h-50 rounded-circle my-2 shadow-lg">
             </div>
             <div class="my-3">
                 <input type="text" name="photo" placeholder="Student Photo URL" class="form-control">
