@@ -455,7 +455,7 @@ if (students_content_list) {
                 <img src="${imageView(photo)}" alt="${name}" class="w-50 h-50 rounded-circle my-2 shadow-lg">
             </div>
             <div class="my-3">
-                <input type="text" name="photo" placeholder="Student Photo URL" class="form-control">
+                <input type="text" value="${imageView(photo)}" name="photo" placeholder="Student Photo URL" class="form-control">
             </div>
             <div class="mt-3">
                 <input type="submit" value="Update Data" placeholder="Student Photo URL" class="form-control w-100 btn btn-primary">
