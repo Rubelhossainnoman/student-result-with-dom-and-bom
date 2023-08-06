@@ -35,9 +35,13 @@
                         <div class="col-lg-10 col-md-12 col-sm-12 col-12">
                             <div class="students_list_container">
                                 <div class="card shadow">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                  <div class="card-header d-flex justify-content-between align-items-center">
+                                      <div class="d-flex align-items-center gap-3">
                                         <h2 class="m-0">Student List</h2>
-                                        <button class="btn btn-primary w-25" data-bs-target="#add_new_student" data-bs-toggle="modal">Add New Student</button>
+                                        <!-- <button class="btn btn-primary btn-close" onclick="location.reload(true)"></button> -->
+                                        <a class="btn btn-warning" href="/searchResult.html">Find Student</a>
+                                      </div>
+                                      <button class="btn btn-primary w-25" data-bs-target="#add_new_student" data-bs-toggle="modal">Add New Student</button>
                                     </div>
                                     <div class="card-body">
                                         <div class="student_list_table">
@@ -245,10 +249,21 @@
         </div>
       </div>
       <!-- End -->
-      <!-- Result view modal -->
-      <div class="modal fade" id="viewResultModal">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content" id="resultSingleViewPart"></div>
+      <!-- Edit Result Modal -->
+      <div class="modal fade" id="editResultModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header d-flex justify-content-between align-items-center">
+              <h4 class="m-0">Edit Your Result</h4>
+              <button data-bs-dismiss="modal" class="btn-close editResultModalClose"></button>
+            </div>
+            <div class="modal-body">
+              <div class="result_body">
+                <div class="edit_result_alert"></div>
+                <form action="" method="post" id="editResult"></form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- End -->

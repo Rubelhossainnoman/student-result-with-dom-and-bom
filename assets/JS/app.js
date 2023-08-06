@@ -13,14 +13,17 @@ const addResult = document.getElementById("addResult");
 const msg = document.querySelector('.msg');
 const editMsg = document.querySelector('.editMsg');
 const result_alert = document.querySelector('.result_alert');
+const edit_result_alert = document.querySelector('.edit_result_alert');
 const createModalClose = document.querySelector('.createModalClose');
 const editModalClose = document.querySelector('.editModalClose');
+const editResultModalClose = document.querySelector('.editResultModalClose');
 const addResultModalClose = document.querySelector('.addResultModalClose');
 const students_content_list = document.getElementById("students_content_list");
 const singleStudentViewInfo = document.getElementById("singleStudentViewInfo");
 const resultSingleViewPart = document.getElementById("resultSingleViewPart");
 const deleteUser = document.querySelector(".deleteUser");
 const edit_student_form = document.getElementById("edit_student_form");
+const editResult = document.getElementById("editResult");
 
 // Show all data here...
 const showAllStudents = (key) =>{
@@ -35,7 +38,7 @@ const showAllStudents = (key) =>{
         allStudents.reverse().map(({id,name,roll,reg,photo,result},index) => {
             const addShowResult = (data, id) =>{
                 if (data) {
-                    return `<button data-bs-toggle="modal" data-bs-target="#viewResultModal" viewResultId="${id}" class="btn btn-primary w-100">View Result</button>`
+                    return `<button data-bs-toggle="modal" data-bs-target="#editResultModal" editResultId="${id}" class="btn btn-primary w-100">Edit Result</button>`
                 } else {
                     return `<button data-bs-toggle="modal" data-bs-target="#addResultModal" addResultId="${id}" class="btn btn-info w-100">Add Result</button>`
                 }
@@ -98,13 +101,12 @@ if (addNewForm) {
         }else {
             // Get data for id here...
             let students = getLsData("students");
-    
             // Get student id here...
             let getId = Math.floor(Math.random() * 1000) + Date.now();
 
             // Set data in array here...
             students.push({
-                id : getId,
+                id : Number(getId),
                 name,
                 email,
                 roll,
@@ -226,15 +228,12 @@ if (edit_student_form) {
             if (confi) {
                 // Get data for id here...
                 let allStudents = getLsData("students");
-
-                // Single student here...
-                const singleStudent = allStudents.findIndex(data => data.id == id);
                 
                 // Now replace data here...
-                allStudents[singleStudent] = {
-                    id,name,email,roll,reg,photo : photo ? photo : "https://i.ibb.co/Bt34sh7/student-avatar.jpg"
+                allStudents[allStudents.findIndex(data => Number(data.id) === Number(id))] = {
+                    ...allStudents[allStudents.findIndex(data => Number(data.id) === Number(id))],
+                    id : Number(id),name,email,roll,reg,photo : photo ? photo : "https://i.ibb.co/Bt34sh7/student-avatar.jpg"
                 }
-
                 // Now set data in localStorage here...
                 setLsData("students", allStudents);
 
@@ -253,6 +252,69 @@ if (edit_student_form) {
 
         }
     }
+}
+
+// update result here....
+if (editResult) {
+    editResult.onsubmit = (e) =>{
+        e.preventDefault();
+
+        // Get form data here...
+        const data = new FormData(e.target);
+        // Convert to object here...
+        const resultData = Object.fromEntries(data.entries());
+        // Distructre formData here...
+        const {bangla,english,math,physics,chemistry,religion,id} = resultData;
+
+        // Check validation here...
+
+        if (!bangla || !english || !math || !physics || !chemistry || !religion) {
+            edit_result_alert.innerHTML = setAlert("All Fields Are Required!");
+        } else if(!numberValidation(bangla)){
+            edit_result_alert.innerHTML = setAlert("Invalid Bangla Number Type! It will be a Number.")
+        } else if(!numberValidation(english)){
+            edit_result_alert.innerHTML = setAlert("Invalid English Number Type! It Will be a Number.")
+        } else if(!numberValidation(math)){
+            edit_result_alert.innerHTML = setAlert("Invalid Math Number Type! It will be a Number.")
+        } else if(!numberValidation(physics)){
+            edit_result_alert.innerHTML = setAlert("Invalid Physics Number Type! It Will be a Number.")
+        } else if(!numberValidation(chemistry)){
+            edit_result_alert.innerHTML = setAlert("Invalid Chemistry Number Type! It will be a Number.")
+        } else if(!numberValidation(religion)){
+            edit_result_alert.innerHTML = setAlert("Invalid Religion Number Type! It Will be a Number.")
+        }else {
+            // Take a confirmation msg here...
+            const confi = confirm("Are you sure to change this data?");
+            if (confi) {
+                // Get data for id here...
+                let allStudents = getLsData("students");
+                // Replace data here...
+                allStudents[allStudents.findIndex(data => data.id === Number(id))].result[0]= {
+                    ...allStudents[allStudents.findIndex(data => data.id === Number(id))].result[0],
+                    bangla,english,math,physics,chemistry,religion
+                }
+
+                // Now set data in localStroage here...
+                setLsData("students", allStudents);
+
+                // Data reset Now here...
+                e.target.reset();
+
+                // Reload show result here...
+                showAllStudents("students");
+
+                // Close popup now here...
+                editResultModalClose.click();
+            } else {
+                // Close popup now here...
+                editResultModalClose.click();
+            }
+            
+        }
+
+    }
+} else {
+    
 }
 
 // View / delete / edit / view result Single data here...
@@ -348,83 +410,7 @@ if (students_content_list) {
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <div class="result_info_sheet">
-              <table class="table table-responsive table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Title Info</th>
-                  </tr>
-                </thead>
-                <tbody class="align-middle">
-                  <tr>
-                    <td>1</td>
-                    <td>Name</td>
-                    <td>${singleStudent.name}</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Roll</td>
-                    <td>${singleStudent.roll}</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Registration</td>
-                    <td>${singleStudent.reg}</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>GPA</td>
-                    <td>${(gpaGrade() / 6).toFixed(2)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="result_gread_sheet">
-              <h3 class="mb-2 text-center mx-auto" style="text-decoration: underline; width: fit-content;">Gread Sheet</h3>
-              <table class="table table-responsive table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th>Code</th>
-                    <th>Subject</th>
-                    <th>Grade</th>
-                  </tr>
-                </thead>
-                <tbody class="align-middle">
-                  <tr>
-                    <td>1</th>
-                    <td>Bangla</td>
-                    <td>${resultGrade(bangla)}</td>
-                  </tr>
-                  <tr>
-                    <td>2</th>
-                    <td>English</td>
-                    <td>${resultGrade(english)}</td>
-                  </tr>
-                  <tr>
-                    <td>3</th>
-                    <td>Mathmatics</td>
-                    <td>${resultGrade(math)}</td>
-                  </tr>
-                  <tr>
-                    <td>4</th>
-                    <td>Physics</td>
-                    <td>${resultGrade(physics)}</td>
-                  </tr>
-                  <tr>
-                    <td>5</th>
-                    <td>Chemistry</td>
-                    <td>${resultGrade(chemistry)}</td>
-                  </tr>
-                  <tr>
-                    <td>6</th>
-                    <td>Religion</td>
-                    <td>${resultGrade(religion)}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            
           </div>`
             
         }
@@ -460,6 +446,53 @@ if (students_content_list) {
             <div class="mt-3">
                 <input type="submit" value="Update Data" placeholder="Student Photo URL" class="form-control w-100 btn btn-primary">
             </div>`;
+        }
+
+        // Edit result here....
+        if (e.target.getAttribute("editResultId")) {
+            // Get id now here...
+            const id = e.target.getAttribute("editResultId");
+
+            // Gell all students here...
+            let allStudents = getLsData("students");
+
+            // Get single student here...
+            const singleStudent = allStudents.find(data => data.id == id);
+
+            // Subject here..
+            let bangla = singleStudent.result[0].bangla
+            let english = singleStudent.result[0].english
+            let math = singleStudent.result[0].math
+            let physics = singleStudent.result[0].physics
+            let chemistry = singleStudent.result[0].chemistry
+            let religion = singleStudent.result[0].religion
+
+            editResult.innerHTML = `
+            <div hidden class="my-3">
+                <input type="text" value="${id}" name="id" class="form-control">
+            </div>
+            <div class="mb-3">
+            <input type="text" name="bangla" value="${bangla}" placeholder="Bangla" class="form-control">
+            </div>
+            <div class="my-3">
+                <input type="text" name="english" value="${english}" placeholder="English" class="form-control">
+            </div>
+            <div class="my-3">
+                <input type="text" name="math" value="${math}" placeholder="Math" class="form-control">
+            </div>
+            <div class="my-3">
+                <input type="text" name="physics" value="${physics}" placeholder="Physics" class="form-control">
+            </div>
+            <div class="my-3">
+                <input type="text" name="chemistry" value="${chemistry}" placeholder="Chemistry" class="form-control">
+            </div>
+            <div class="my-3">
+                <input type="text" name="religion" value="${religion}" placeholder="Religion" class="form-control">
+            </div>
+            <div class="my-3">
+                <input type="submit" value="Update Result" class="w-100 btn btn-info">
+            </div>`;
+            
         }
 
         // Add result here...

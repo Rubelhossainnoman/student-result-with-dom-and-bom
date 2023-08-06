@@ -48,4 +48,11 @@ img {
 }
 .modal_wrapper #edit_student_form img {
   border: 8px solid #fff;
+}
+.modal_wrapper .student_info_table img {
+  width: 200px;
+  height: 200px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
 }/*# sourceMappingURL=style.css.map */
